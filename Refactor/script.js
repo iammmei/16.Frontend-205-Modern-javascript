@@ -1,4 +1,5 @@
 import Data from "./config.js";
+
 const searchBar = document.querySelector("#searchBar");
 const container = document.querySelector(".container");
 const cityNameContainer = document.querySelector(".city-name");
@@ -12,12 +13,12 @@ const weekdays = [
   "Friday",
   "Saturday",
 ];
+
 console.log("hello world");
-// Event will start on a keyup action
+
+// Event listener for the search bar
 searchBar.addEventListener("keyup", (event) => {
-  // checking the action for specific key (Enter)
   if (event.key === "Enter") {
-    // Store target in variable
     const thisCity = event.target.value.toLowerCase();
     const apiUrl =
       "https://api.openweathermap.org/data/2.5/forecast/?q=" +
@@ -25,13 +26,13 @@ searchBar.addEventListener("keyup", (event) => {
       "&appid=" +
       Data.key;
     event.currentTarget.value = "";
-    // Fetching first api to get the City coordinates
+
+    // Fetching the first API to get the city coordinates
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
         const lon = data.city.coord.lon;
         const lat = data.city.coord.lat;
-
         cityNameContainer.innerHTML = data.city.name;
 
         // Fetching final data according to the coordinates
@@ -46,22 +47,21 @@ searchBar.addEventListener("keyup", (event) => {
           .then((response) => response.json())
           .then((result) => {
             console.log(
-              "Welcome to this basic weather app. this is not a product but the product of an academic exercise."
+              "Welcome to this basic weather app. This is not a product but the product of an academic exercise."
             );
 
-            // Removing all child elements from Container before creating new set of elements
+            // Removing all child elements from the container before creating a new set of elements
             while (container.firstChild) {
               container.removeChild(container.firstChild);
             }
 
             // Looping through 5 days of weather data
             for (let i = 0; i < 5; i++) {
-              // Use the remainder operator (%) to switch from saturday (last in array) back to sunday (first in array)
               const date = new Date();
               let dayOfTheWeek = weekdays[(date.getDay() + i) % 7];
-              const data = result.daily[i];
+              const weatherData = result.daily[i];
 
-              // Create the elements with Data
+              // Create the elements with data
               const card = document.createElement("div");
               card.classList.add("card");
               container.appendChild(card);
@@ -73,7 +73,7 @@ searchBar.addEventListener("keyup", (event) => {
               const cardImg = document.createElement("img");
               cardImg.src =
                 "http://openweathermap.org/img/wn/" +
-                data.weather[0].icon +
+                weatherData.weather[0].icon +
                 "@2x.png";
               imageBox.appendChild(cardImg);
 
@@ -86,7 +86,7 @@ searchBar.addEventListener("keyup", (event) => {
               contentBox.appendChild(cardHeader);
 
               const tempDescription = document.createElement("h4");
-              tempDescription.innerHTML = data.weather[0].description;
+              tempDescription.innerHTML = weatherData.weather[0].description;
               contentBox.appendChild(tempDescription);
 
               const currentTempBox = document.createElement("div");
@@ -99,7 +99,7 @@ searchBar.addEventListener("keyup", (event) => {
 
               const currentTemp = document.createElement("span");
               currentTemp.classList.add("current-temp");
-              currentTemp.innerHTML = data.temp.day + "°C";
+              currentTemp.innerHTML = weatherData.temp.day + "°C";
               currentTempBox.appendChild(currentTemp);
 
               const minMaxTemperatures = document.createElement("div");
@@ -112,19 +112,20 @@ searchBar.addEventListener("keyup", (event) => {
 
               const minTemp = document.createElement("span");
               minTemp.classList.add("min-temp");
-              minTemp.innerHTML = data.temp.min + "°C";
+              minTemp.innerHTML = weatherData.temp.min + "°C";
               minMaxTemperatures.appendChild(minTemp);
 
               const maxTemp = document.createElement("span");
               maxTemp.classList.add("max-temp");
-              maxTemp.innerHTML = data.temp.max + "°C";
+              maxTemp.innerHTML = weatherData.temp.max + "°C";
               minMaxTemperatures.appendChild(maxTemp);
             }
           });
       })
       .catch((error) => {
-        // If there are errors, send out an error message
         console.error("Error:", "not a place!");
+
+        // If there are errors, send out an error message
         while (container.firstChild) {
           container.removeChild(container.firstChild);
         }
