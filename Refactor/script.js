@@ -128,6 +128,7 @@ searchBar.addEventListener("keyup", (event) => {
         while (container.firstChild) {
           container.removeChild(container.firstChild);
           console.log(hello);
+          console.log(hi)
         }
         return alert("Are you sure you aren't holding your map upside down?");
       });
