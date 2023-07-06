@@ -127,9 +127,7 @@ searchBar.addEventListener("keyup", (event) => {
         console.error("Error:", "not a place!");
         while (container.firstChild) {
           container.removeChild(container.firstChild);
-          console.log(hello);
-          console.log(hi)
-          console.log(stt)
+        
         }
         return alert("Are you sure you aren't holding your map upside down?");
       });
